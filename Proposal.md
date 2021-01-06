@@ -17,8 +17,8 @@
 ## Group Tasks:
     - Top 10 lists 
 	    -Closing prices
-    - Sharp ratio of each stock
+    - Sharpe ratio of each stock
     - Machine Learning Model to predict the sharp ratio (3 days)
-    - Lambda function for sage maker
-    - Chatbox working for amazon lex
+    - Lambda function - Sage Maker
+    - Chatbox working - Amazon lex
 
