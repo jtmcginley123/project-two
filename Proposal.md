@@ -19,6 +19,6 @@
 	    -Closing prices
     - Sharpe ratio of each stock
     - Machine Learning Model to predict the Sharpe ratio (3 days)
-    - Lambda function for sage maker
-    - Chatbox working for amazon lex
+    - Lambda function for Amazon SageMaker
+    - Chatbox working for Amazon Lex
 
