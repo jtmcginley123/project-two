@@ -97,22 +97,33 @@ def recommend_portfolio(intent_request):
         # Use the elicitSlot dialog action to re-prompt
         # for the first violation detected.
 
-        ### YOUR DATA VALIDATION CODE STARTS HERE ###
+    ### YOUR DATA VALIDATION CODE STARTS HERE ###
 
-        ### YOUR DATA VALIDATION CODE ENDS HERE ###
+        slots = get_slots(intent_request)
+
+        validation_result = validate_data(age, investment_amount, intent_request, risk_level)
+
+        if not validation_result["isValid"]:
+            slots[validation_result["violatedSlot"]] = None # Cleans invalid slot
+            
+            # Returns and elicitSlot dialog to request new data for the invalid slot
+            return elicit_slot(
+                intent_request["sessionAttributes"],
+                intent_request["currentIntent"]["name"],
+                slots,
+                validation_result["violatedSlot"],
+                validation_result["message"],
+                )
 
         # Fetch current session attibutes
         output_session_attributes = intent_request["sessionAttributes"]
 
         return delegate(output_session_attributes, get_slots(intent_request))
 
-    # Get the initial investment recommendation
+    initial_recommendation = get_investment_recommendation(risk_level)
 
-    ### YOUR FINAL INVESTMENT RECOMMENDATION CODE STARTS HERE ###
+        # Return a message with the initial recommendation based on the risk level.
 
-    ### YOUR FINAL INVESTMENT RECOMMENDATION CODE ENDS HERE ###
-
-    # Return a message with the initial recommendation based on the risk level.
     return close(
         intent_request["sessionAttributes"],
         "Fulfilled",
@@ -126,6 +137,54 @@ def recommend_portfolio(intent_request):
         },
     )
 
+def validate_data(age, investment_amount, intent_request, risk_level):
+    # Validate that age is greater than 0 and less than 65
+    if age is not None:
+        age = parse_int(age)
+        if age <= 0:
+            return build_validation_result(
+                False,
+                "age",
+                "You are not born yet, you cannot start saving!")
+        elif age >= 65:
+            return build_validation_result(
+                False,
+                "age",
+                "The maximum age to contract this service is 64. Please choose an age between 0 and 64")
+                
+    # Validate that investment amount is greater than 5000
+    if investment_amount is not None:
+        investment_amount = parse_int(investment_amount)
+        if investment_amount < 5000:
+            return build_validation_result(
+                False,
+                "investmentAmount",
+                "The minimum amount to invest should be equal to or greater than $5,000, "
+                "please provide a greater amount.")
+
+    # True result will return if age and/or are valid
+    return build_validation_result(True, None, None)
+    
+
+        ### YOUR DATA VALIDATION CODE ENDS HERE ###
+
+    ### YOUR FINAL INVESTMENT RECOMMENDATION CODE STARTS HERE ###
+
+
+    # Get the initial investment recommendation
+def get_investment_recommendation(risk_level):
+    risk_levels = {
+        "None": # NEED TO CHANGE THIS TO OUR CODE,
+        "Very Low": # NEED TO CHANGE THIS TO OUR CODE,
+        "Low": # NEED TO CHANGE THIS TO OUR CODE,
+        "Medium": # NEED TO CHANGE THIS TO OUR CODE,
+        "High": # NEED TO CHANGE THIS TO OUR CODE,
+        "Very High": # NEED TO CHANGE THIS TO OUR CODE
+    }
+            
+    return risk_levels[risk_level]
+
+    ### YOUR FINAL INVESTMENT RECOMMENDATION CODE ENDS HERE ###
 
 ### Intents Dispatcher ###
 def dispatch(intent_request):
