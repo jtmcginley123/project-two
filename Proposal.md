@@ -22,9 +22,9 @@
     - Machine Learning Model to predict the sharp ratio (3 days)
     - Lambda function - Sage Maker
     - Chatbox working - Amazon lex
-=======
+<<<<<<<
     - Machine Learning Model to predict the Sharpe ratio (3 days)
     - Lambda function for Amazon SageMaker
     - Chatbox working for Amazon Lex
->>>>>>> a864510a67ff6d3faef9232ffbfe78edaedd35bd
+
 
