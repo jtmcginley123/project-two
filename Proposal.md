@@ -16,8 +16,21 @@
     - Alpaca API
 ## Group Tasks:
     - Top 10 lists 
+<<<<<<< HEAD
 	-Closing prices
     - Sharpe ratio of each stock
     - Machine Learning Model to predict the sharp ratio (3 days)
     - Lambda function  (Sage Maker)
     - Chatbox working   (Amazon lex)
+=======
+	    -Closing prices
+        - Sharpe ratio of each stock
+        - Machine Learning Model to predict the sharp ratio (3 days)
+        - Lambda function - Sage Maker
+        - Chatbox working - Amazon lex
+        - Machine Learning Model to predict the Sharpe ratio (3 days)
+        - Lambda function for Amazon SageMaker
+        - Chatbox working for Amazon Lex
+
+
+>>>>>>> 4051014498cc91875894cbfdabfa1164830394c3
