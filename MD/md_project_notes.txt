@@ -1,0 +1,37 @@
+train model on sagemaker, host on endpoint
+aws merge into lambda
+
+AWS Lex chat bot will assess risk profile of the client and use lambda function(s) to determine which stocks will be recommended to the client.
+
+
+
+benchmarks
+sp500
+barclays aggregate bond index
+us treasuries
+
+Beta
+Beta is another common measure of risk. Beta measures the amount of systematic risk an individual security or an industrial sector has relative to the whole stock market. The market has a beta of 1, and it can be used to gauge the risk of a security. If a security's beta is equal to 1, the security's price moves in time step with the market. A security with a beta greater than 1 indicates that it is more volatile than the market.
+Conversely, if a security's beta is less than 1, it indicates that the security is less volatile than the market. For example, suppose a security's beta is 1.5. In theory, the security is 50 percent more volatile than the market.
+
+Standard Deviation
+Standard deviation is a statistical measure of volatility by calculating the variance in price moves of an investment to the mean or average return over a period. The greater the variance between each price of the investment and the mean; the greater the price range or standard deviation. In other words, a higher standard deviation indicates more volatility and greater risk.
+
+
+Sharpe Ratio
+The Sharpe Ratio is a widely used measure of risk-adjusted return. The Sharpe ratio is the average return earned more than a risk-free investment, such as a U.S. government bond. A higher Sharpe ratio indicates a superior overall risk-adjusted return.
+
+R-squared
+R-squared is a statistical measure that represents the percentage of a fund portfolio or a security's movements that can be explained by movements in a benchmark index. For fixed-income securities and bond funds, the benchmark is the U.S. Treasury Bill. The S&P 500 Index is the benchmark for equities and equity funds.
+
+R-squared values range from 0 to 100. According to Morningstar, a mutual fund with an R-squared value between 85 and 100 has a performance record that is closely correlated to the index. A fund rated 70 or less typically does not perform like the index.
+
+Mutual fund investors should avoid actively managed funds with high R-squared ratios, which are generally criticized by analysts as being "closet" index funds. In such cases, it makes little sense to pay higher fees for professional management when you can get the same or better results from an index fund.
+
+
+
+
+
+
+
+
