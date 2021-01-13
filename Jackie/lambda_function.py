@@ -12,6 +12,14 @@ def parse_int(n):
     except ValueError:
         return float("nan")
 
+def parse_str(n):
+    """
+    Securely convert a non-string to a string.
+    """
+    try:
+        return str(n)
+    except ValueError:
+        return float("nan")
 
 def build_validation_result(is_valid, violated_slot, message_content):
     """
@@ -87,14 +95,23 @@ def recommend_portfolio(intent_request):
     """
 
     first_name = get_slots(intent_request)["firstName"]
+    
     continue_confirmation = get_slots(intent_request)["continueConfirm"]
+    
     us_state = get_slots(intent_request)["stateUS"]
+    
     understood_confirmation = get_slots(intent_request)["understoodConfirm"]
+    
     age = get_slots(intent_request)["age"]
+    
     custodial_acct = get_slots(intent_request)["custodialAccount"]
+    
     investment_amount = get_slots(intent_request)["investmentAmount"]
+    
     until_retire = get_slots(intent_request)["untilRetirement"]
+    
     risk_level = get_slots(intent_request)["riskLevel"]
+    
     source = intent_request["invocationSource"]
 
     if source == "DialogCodeHook":
@@ -106,8 +123,7 @@ def recommend_portfolio(intent_request):
 
         slots = get_slots(intent_request)
 
-        validation_result = validate_data(continue_confirmation, us_state, understood_confirmation, 
-        age, custodial_acct, investment_amount, until_retire, intent_request, risk_level)
+        validation_result = validate_data(continue_confirmation, us_state, understood_confirmation, age, custodial_acct, investment_amount, until_retire, intent_request, risk_level)
 
         if not validation_result["isValid"]:
             slots[validation_result["violatedSlot"]] = None # Cleans invalid slot
@@ -144,22 +160,15 @@ def recommend_portfolio(intent_request):
         },
     )
 
-def validate_data(continue_confirmation, us_state, understood_confirmation, age, custodial_acct, 
-investment_amount, until_retire, intent_request, risk_level):
+def validate_data(continue_confirmation, us_state, understood_confirmation, age, custodial_acct, investment_amount, until_retire, intent_request, risk_level):
     # Validate if they would like to continue because they must provide the state they reside in.
     if continue_confirmation is not None:
         continue_confirmation = parse_str(continue_confirmation)
-        if continue_confirmation == "Yes":
+        if continue_confirmation == "No":
             return build_validation_result(
                 True,
                 "continueConfirm",
-                "Thank you. Let's continue!")
-        elif continue_confirmation == "No":
-            return build_validation_result(
-                False,
-                "continueConfirm",
-                "We hope you use our services in the future when you are able to provide this information."
-                "We hope you have a good day.")
+                "We hope you use our services in the future when you are able to provide this information. We hope you have a good day.")
                 
     # Validate what state they live in. Alabama, Deleware, and Nebraska have age requirement of 19 to trade. 
     # Mississippi have age requirement of 21.
@@ -192,17 +201,17 @@ investment_amount, until_retire, intent_request, risk_level):
                 "Your state has an age requirement of 18 to trade without a custodial account.")
         
     # Validate that they understand the age requirement of the state they reside in.
-    if continue_confirmation is not None:
-        continue_confirmation = parse_str(continue_confirmation)
-        if continue_confirmation == "Yes":
+    if understand_confirmation is not None:
+        understand_confirmation = parse_str(understood_confirmation)
+        if understood_confirmation == "Yes":
             return build_validation_result(
                 True,
-                "continueConfirm",
+                "understoodConfirm",
                 "We have just a few more questions we need you to answer!")
-        if continue_confirmation == "No":
+        if understood_confirmation == "No":
             return build_validation_result(
                 False,
-                "continueConfirm",
+                "understoodConfirm",
                 "We hope you use our services in the future when you are able to provide this information."
                 "We hope you have a good day.")
         
@@ -210,30 +219,31 @@ investment_amount, until_retire, intent_request, risk_level):
     # Validate that age is greater than 19 in Alabama, Delaware, and Nebraska, greater than 21 in Mississippi
     # and 18 in all other states
     if age is not None:
+        us_state = parse_str(us_state)
         age = parse_int(age)
         if us_state == "AL" and age < 19:
             return build_validation_result(
-                False,
+                True,
                 "age",
-                "You are not of age to trade in Alabama. We hope you return to our services when you are at least 19 years old.")
+                "You are not of age to trade in Alabama.")
         elif us_state == "DE" and age < 19:
             return build_validation_result(
-                False,
+                True,
                 "age",
                 "You are not of age to trade in Deleware. We hope you return to our services when you are at least 19 years old.")
         elif us_state == "NE" and age < 19:
             return build_validation_result(
-                False,
+                True,
                 "age",
                 "You are not of age to trade in Nebraska. We hope you return to our services when you are at least 19 years old.")
         elif us_state == "MS" and age < 21:
             return build_validation_result(
-                False,
+                True,
                 "age",
                 "You are not of age to trade in Mississippi. We hope you return to our services when you are at least 19 years old.")
         elif age > 65:
             return build_validation_result(
-                False,
+                True,
                 "age",
                 "With our services and investment recommendations, our goal is to provide you with an opportunity invest enough money"
                 "to retire before the age of 65. Please enter an age that is younger than 65.")
@@ -326,7 +336,7 @@ investment_amount, until_retire, intent_request, risk_level):
                 "and will find options to fit it.")
 
     # True result will return if age and/or are valid
-    return build_validation_result(True, None, None)
+    return build_validation_result(True, None, True)
     
 
         ### YOUR DATA VALIDATION CODE ENDS HERE ###
@@ -356,7 +366,7 @@ def dispatch(intent_request):
     intent_name = intent_request["currentIntent"]["name"]
 
     # Dispatch to bot's intent handlers
-    if intent_name == "RecommendPortfolio":
+    if intent_name == "StockRecommendation":
         return recommend_portfolio(intent_request)
 
     raise Exception("Intent with name " + intent_name + " not supported")
