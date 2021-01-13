@@ -136,7 +136,8 @@ def recommend_portfolio(intent_request):
         {
             "contentType": "PlainText",
             "content": """{} thank you for your information;
-            based on the risk level you defined, my recommendation is to choose an investment portfolio with {}
+            based on your age, the time until desired retirement, and the risk level you defined, 
+            my recommendation is to choose an investment portfolio with {}
             """.format(
                 first_name, initial_recommendation
             ),
@@ -193,6 +194,11 @@ investment_amount, until_retire, intent_request, risk_level):
     # Validate that they understand the age requirement of the state they reside in.
     if continue_confirmation is not None:
         continue_confirmation = parse_str(continue_confirmation)
+        if continue_confirmation == "Yes":
+            return build_validation_result(
+                True,
+                "continueConfirm",
+                "We have just a few more questions we need you to answer!")
         if continue_confirmation == "No":
             return build_validation_result(
                 False,
@@ -205,22 +211,22 @@ investment_amount, until_retire, intent_request, risk_level):
     # and 18 in all other states
     if age is not None:
         age = parse_int(age)
-        if us_state == "AL" and age <= 19:
+        if us_state == "AL" and age < 19:
             return build_validation_result(
                 False,
                 "age",
                 "You are not of age to trade in Alabama. We hope you return to our services when you are at least 19 years old.")
-        elif us_state == "DE" and age <= 19:
+        elif us_state == "DE" and age < 19:
             return build_validation_result(
                 False,
                 "age",
                 "You are not of age to trade in Deleware. We hope you return to our services when you are at least 19 years old.")
-        elif us_state == "NE" and age <= 19:
+        elif us_state == "NE" and age < 19:
             return build_validation_result(
                 False,
                 "age",
                 "You are not of age to trade in Nebraska. We hope you return to our services when you are at least 19 years old.")
-        elif us_state == "MS" and age <= 21:
+        elif us_state == "MS" and age < 21:
             return build_validation_result(
                 False,
                 "age",
@@ -235,7 +241,7 @@ investment_amount, until_retire, intent_request, risk_level):
    # Validate if they are under the age requirement in their residing state that their parent or guardian has a custodial account.             
     if custodial_acct is not None:
         custodial_acct = parse_str(custodial_acct)
-        if state = "AL","NE","DE" and age < 19 and custodial_acct == "Yes":
+        if state = "AL","NE","DE" and age >= 19 and custodial_acct == "Yes":
             return build_validation_result(
                 True,
                 "custodialAccount",
@@ -246,7 +252,7 @@ investment_amount, until_retire, intent_request, risk_level):
                 "custodialAccount",
                 "Unfortunatly, since the age or custodial account requirement is not met, we will not be able to continue your services"
                 "at this time. We hope you return to our services when one of the requirements is met.")
-        elif state == "MS" and age < 21 and custodial_acct == "Yes":
+        elif state == "MS" and age >= 21 and custodial_acct == "Yes":
             return build_validation_result(
                 True,
                 "custodialAccount",
@@ -257,7 +263,7 @@ investment_amount, until_retire, intent_request, risk_level):
                 "custodialAccount",
                 "Unfortunatly, since the age or custodial account requirement is not met, we will not be able to continue your services"
                 "at this time. We hope you return to our services when one of the requirements is met.")
-        elif age < 18 and custodial == "Yes":
+        elif age >= 18 and custodial == "Yes":
             return build_validation_result(
                 True,
                 "custodialAccount",
@@ -294,25 +300,25 @@ investment_amount, until_retire, intent_request, risk_level):
                 "untilRetirement",
                 "With the time constrain at hand, we are unable to ensure success in our services and recommendations. We apologize for"
                 "the inconvenience.")
-        elif till_retire > 1 and < 12:
+        elif till_retire >= 1 and < 12:
             return build_validation_result(
                 True,
                 "untilRetirement",
                 "We recommend ________ risk level to ensure success in your investments. If you choose another option, we understand"
                 "and will find options to fit it.")
-        elif till_retire > 12 and < 24:
+        elif till_retire >= 12 and < 24:
             return build_validation_result(
                 True,
                 "untilRetirement",
                 "We recommend ________ risk level to ensure success in your investments. If you choose another option, we understand"
                 "and will find options to fit it.")
-        elif till_retire > 24 and < 35:
+        elif till_retire >= 24 and < 35:
             return build_validation_result(
                 True,
                 "untilRetirement",
                 "We recommend ________ risk level to ensure success in your investments. If you choose another option, we understand"
                 "and will find options to fit it.")
-        elif till_retire > 35 and < 47:
+        elif till_retire >= 35 and < 47:
             return build_validation_result(
                 True,
                 "untilRetirement",
